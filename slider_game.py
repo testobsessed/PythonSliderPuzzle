@@ -8,9 +8,11 @@ class Board:
         if not Board.valid(tile_config):
             raise RuntimeError("Tile configuration invalid. Must be a 2x2 or larger square with sequential numbers and one blank tile.")
         self.tiles = tile_config
+        self.numbers = Board.numbers(tile_config)
         self.solution = Board.numbers(tile_config) + [None]
         self.blank_position = self.tiles.index(None)
         self.dimension = int(sqrt(len(self.tiles)))
+        self.inversions = Board.count_inversions(tile_config)
 
     def tileat(self, position):
         return self.tiles[position]
@@ -72,12 +74,41 @@ class Board:
         # make sure there empty spot is a neighbor
         return (None in self.tile_neighbors(tile))
 
+    def is_solvable(self):
+        # start with the assumption that it is not solvable
+        solvable = False
+
+        # for an NxN puzzle where N is Even
+        if (self.dimension % 2) == 0:
+            # a puzzle NxN where N is Even is only solvable if:
+            # ...Inversions are Odd and blank tile row # is Odd, OR
+            # ...Inversions are Even and blank tile row # is Even
+            blank_row = (self.tiles.index(None) // self.dimension) + 1
+            if ((self.inversions % 2) == (blank_row % 2)): solvable = True
+            
+        # and for Odd...
+        else:
+            # a puzzle NxN where N is Odd is only solvable if Inversions is Even
+            if ((self.inversions % 2) == 0): solvable = True
+
+        return solvable
+
     @staticmethod
     def numbers(tile_config):
         # get a list of just the numbers in the tile config, sorted
         numbers = list(filter(lambda item: type(item) is int, tile_config))
         numbers.sort()
         return numbers
+
+    @staticmethod
+    def count_inversions(tile_config):
+        just_numbers = list(filter(lambda item: type(item) is int, tile_config))
+        num_inversions = 0
+        for num, tile in enumerate(just_numbers, start = 0):
+            for i in range(num + 1, len(just_numbers)):
+                if (just_numbers[i] < tile):
+                    num_inversions += 1
+        return num_inversions
 
     @staticmethod
     def valid(tile_config):
