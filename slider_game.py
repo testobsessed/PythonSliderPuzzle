@@ -36,38 +36,30 @@ class Board:
         tile_position = self.tiles.index(tile)
         return self.rowcol(tile_position)
 
-    def position_neighbor_above(self, tile_position):
+    def neighbor_above(self, tile_position):
         above_position = tile_position - self.dimension
-        return (self.tileat(above_position) if above_position >= 0 else "Edge")
+        at_top_edge = (above_position < 0)
+        return ("Edge" if at_top_edge else self.tileat(above_position))
 
-    def position_neighbor_right(self, tile_position):
-        if ((tile_position % self.dimension) < (self.dimension - 1)):
-            right = self.tileat(tile_position + 1)
-        else:
-            right = "Edge"
-        return right
+    def neighbor_right(self, tile_position):
+        at_right_edge = ((tile_position % self.dimension) == (self.dimension - 1))
+        return ("Edge" if at_right_edge else self.tileat(tile_position + 1))
 
-    def position_neighbor_below(self, tile_position):
-        if (tile_position + self.dimension < len(self.tiles)):
-            below = self.tileat(tile_position + self.dimension)
-        else:
-            below = "Edge"
-        return below
+    def neighbor_below(self, tile_position):
+        below_position = tile_position + self.dimension
+        return (self.tileat(below_position) if below_position < len(self.tiles) else "Edge")
 
-    def position_neighbor_left(self, tile_position):
-        if ((tile_position % self.dimension) != 0):
-            left = self.tileat(tile_position - 1)
-        else:
-            left = "Edge"
-        return left
+    def neighbor_left(self, tile_position):
+        at_left_edge = ((tile_position % self.dimension) == 0)
+        return ("Edge" if at_left_edge else self.tileat(tile_position - 1))
 
     def tile_neighbors(self, tile):
         tile_position = self.tiles.index(tile)
 
-        above = self.position_neighbor_above(tile_position)
-        right = self.position_neighbor_right(tile_position)
-        below = self.position_neighbor_below(tile_position)
-        left = self.position_neighbor_left(tile_position)
+        above = self.neighbor_above(tile_position)
+        right = self.neighbor_right(tile_position)
+        below = self.neighbor_below(tile_position)
+        left = self.neighbor_left(tile_position)
         return [above, right, below, left]
 
     def is_move_valid(self, tile):
