@@ -126,13 +126,13 @@ def test_board_cannot_move_if_tile_surrounded():
     assert puzzle.tiles == [1,2,3,4,5,6,7,None,8]
 
 def test_board_can_count_0_inversions():
-    assert 0 == Board.count_inversions([1,2,3,4,5,6,7,None,8])
+    assert 0 == Board([1,2,3,4,5,6,7,None,8]).inversions
 
 def test_board_can_count_1_inversion():
-    assert 1 == Board.count_inversions([1, 2, 3, 4, 5, 6, 8, 7, None])
+    assert 1 == Board([1, 2, 3, 4, 5, 6, 8, 7, None]).inversions
 
 def test_board_can_count_2_inversions():
-    assert 2 == Board.count_inversions([1, 2, 3, 4, 5, 8, 6, 7, None])
+    assert 2 == Board([1, 2, 3, 4, 5, 8, 6, 7, None]).inversions
 
 def test_board_can_tell_if_a_3x3_config_is_solvable():
     assert Board([1, 2, 3, 4, 5, 6, 7, 8, None]).is_solvable()

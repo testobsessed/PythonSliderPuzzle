@@ -8,11 +8,11 @@ class Board:
         if not Board.valid(tile_config):
             raise RuntimeError("Tile configuration invalid. Must be a 2x2 or larger square with sequential numbers and one blank tile.")
         self.tiles = tile_config
-        self.numbers = Board.numbers(tile_config)
-        self.solution = Board.numbers(tile_config) + [None]
+        self.numbers = self.get_tile_numbers()
+        self.solution = sorted(self.numbers) + [None]
         self.blank_position = self.tiles.index(None)
         self.dimension = int(sqrt(len(self.tiles)))
-        self.inversions = Board.count_inversions(tile_config)
+        self.inversions = self.count_inversions()
 
     def tileat(self, position):
         return self.tiles[position]
@@ -74,6 +74,14 @@ class Board:
         # make sure there empty spot is a neighbor
         return (None in self.tile_neighbors(tile))
 
+    def count_inversions(self):
+        num_inversions = 0
+        for num, tile in enumerate(self.numbers, start = 0):
+            for i in range(num + 1, len(self.numbers)):
+                if (self.numbers[i] < tile):
+                    num_inversions += 1
+        return num_inversions
+
     def is_solvable(self):
         # start with the assumption that it is not solvable
         solvable = False
@@ -85,7 +93,7 @@ class Board:
             # ...Inversions are Even and blank tile row # is Even
             blank_row = (self.tiles.index(None) // self.dimension) + 1
             if ((self.inversions % 2) == (blank_row % 2)): solvable = True
-            
+
         # and for Odd...
         else:
             # a puzzle NxN where N is Odd is only solvable if Inversions is Even
@@ -93,22 +101,11 @@ class Board:
 
         return solvable
 
-    @staticmethod
-    def numbers(tile_config):
+    def get_tile_numbers(self):
         # get a list of just the numbers in the tile config, sorted
-        numbers = list(filter(lambda item: type(item) is int, tile_config))
-        numbers.sort()
+        numbers = [item for item in self.tiles if isinstance(item, int)]
+        #numbers.sort()
         return numbers
-
-    @staticmethod
-    def count_inversions(tile_config):
-        just_numbers = list(filter(lambda item: type(item) is int, tile_config))
-        num_inversions = 0
-        for num, tile in enumerate(just_numbers, start = 0):
-            for i in range(num + 1, len(just_numbers)):
-                if (just_numbers[i] < tile):
-                    num_inversions += 1
-        return num_inversions
 
     @staticmethod
     def valid(tile_config):
@@ -119,13 +116,12 @@ class Board:
             return False
 
         # error out if there is not one and only one blank space
-        numbers = Board.numbers(tile_config)
+        numbers = sorted([item for item in tile_config if isinstance(item, int)])
         has_one_space = (len(tile_config) - len(numbers) == 1)
         if not has_one_space:
             return False
 
         # detect if the tiles are not a set of sequential numbers
-        numbers.sort()
         has_sequential_numbers = True
         for num, tile in enumerate(numbers, start = 1):
             if tile != num:
