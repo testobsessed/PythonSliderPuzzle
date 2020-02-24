@@ -17,11 +17,6 @@ class Board:
     def tileat(self, position):
         return self.tiles[position]
 
-    def rowcol(self, position):
-        row = position // self.dimension
-        col = position % self.dimension
-        return [row, col]
-
     def solved(self):
         return self.tiles == self.solution
 
@@ -31,10 +26,6 @@ class Board:
             self.tiles[self.blank_position] = tile
             self.blank_position = tile_position
             self.tiles[tile_position] = None
-
-    def rowcol_of_tile(self, tile):
-        tile_position = self.tiles.index(tile)
-        return self.rowcol(tile_position)
 
     def neighbor_above(self, tile_position):
         above_position = tile_position - self.dimension

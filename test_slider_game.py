@@ -17,25 +17,6 @@ def test_board_knows_dimensions():
     puzzle = Board([3, 2, 1, 4, 5, 6, 7, 8, None])
     assert puzzle.dimension == 3
 
-def test_board_converts_position_to_rowcol():
-    puzzle = Board()
-    assert puzzle.rowcol(0) == [0, 0]
-    assert puzzle.rowcol(1) == [0, 1]
-    assert puzzle.rowcol(2) == [0, 2]
-    assert puzzle.rowcol(3) == [1, 0]
-    assert puzzle.rowcol(4) == [1, 1]
-    assert puzzle.rowcol(5) == [1, 2]
-    assert puzzle.rowcol(6) == [2, 0]
-    assert puzzle.rowcol(7) == [2, 1]
-    assert puzzle.rowcol(8) == [2, 2]
-
-def test_board_can_find_row_col_of_tile():
-    puzzle = Board([2, 3, 1, None])
-    assert puzzle.rowcol_of_tile(2) == [0,0]
-    assert puzzle.rowcol_of_tile(3) == [0,1]
-    assert puzzle.rowcol_of_tile(1) == [1,0]
-    assert puzzle.rowcol_of_tile(None) == [1, 1]
-
 def test_board_knows_0_tiles_is_not_valid():
     assert not Board().valid([])
 
