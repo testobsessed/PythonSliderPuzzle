@@ -1,6 +1,4 @@
 from math import sqrt
-from typing import List, Union
-
 
 class Board:
 
