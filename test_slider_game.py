@@ -126,8 +126,8 @@ def test_board_can_tell_if_a_2x2_config_is_solvable():
     assert puzzle.is_solvable()
 
 def test_board_can_tell_if_a_2x2_config_is_not_solvable():
-    puzzle = Board([1, None, 2, 3])
-    assert not puzzle.is_solvable()
+    assert not Board([1, None, 2, 3]).is_solvable()
+    assert not Board([1, 3, 2, None]).is_solvable()
 
 def test_board_can_report_delta_to_solution():
     assert Board([1, 2, 3, None]).delta_from_solution() == 0
@@ -144,3 +144,42 @@ def test_board_can_list_available_moves():
 def test_board_can_report_diff_score_to_possible_new_state():
     puzzle = Board([1, None, 3, 2])
     assert puzzle.solution_diff_score_from([None, 1, 3, 2]) == 3
+
+def test_board_can_generate_all_valid_2x2_permutations():
+    puzzles = Board.get_boards(2)
+    assert [1, 2, 3, None] not in puzzles # does not include solution
+    assert[1, 3, 2, None] not in puzzles # does not include invalid config
+    assert [1, 2, None, 3] in puzzles # does include a known valid config
+    for puzzle in puzzles:
+        assert Board.valid(puzzle) # and all the others are valid
+
+def test_board_can_generate_all_2d_permutations():
+    assert sorted(Board.get_permutations([1, 2])) == [[1, 2], [2, 1]]
+
+def test_board_can_generate_all_2x2_permutations():
+    assert Board.get_permutations([1, 2, 3, None]) == [
+        [1, 2, 3, None],
+        [1, 2, None, 3],
+        [1, 3, 2, None],
+        [1, 3, None, 2],
+        [1, None, 2, 3],
+        [1, None, 3, 2],
+        [2, 1, 3, None],
+        [2, 1, None, 3],
+        [2, 3, 1, None],
+        [2, 3, None, 1],
+        [2, None, 1, 3],
+        [2, None, 3, 1],
+        [3, 1, 2, None],
+        [3, 1, None, 2],
+        [3, 2, 1, None],
+        [3, 2, None, 1],
+        [3, None, 1, 2],
+        [3, None, 2, 1],
+        [None, 1, 2, 3],
+        [None, 1, 3, 2],
+        [None, 2, 1, 3],
+        [None, 2, 3, 1],
+        [None, 3, 1, 2],
+        [None, 3, 2, 1]
+    ]

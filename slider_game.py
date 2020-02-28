@@ -1,10 +1,12 @@
 from math import sqrt
 
+
 class Board:
 
-    def __init__(self, tile_config = [1,2,3,4,5,6,7,8,None]):
+    def __init__(self, tile_config=[1, 2, 3, 4, 5, 6, 7, 8, None]):
         if not Board.valid(tile_config):
-            raise RuntimeError("Tile configuration invalid. Must be a 2x2 or larger square with sequential numbers and one blank tile.")
+            raise RuntimeError(
+                "Tile configuration invalid. Must be a 2x2 or larger square with sequential numbers and one blank tile.")
         self.tiles = tile_config
         self.numbers = self.get_tile_numbers()
         self.solution = sorted(self.numbers) + [None]
@@ -57,7 +59,7 @@ class Board:
 
     def count_inversions(self):
         num_inversions = 0
-        for num, tile in enumerate(self.numbers, start = 0):
+        for num, tile in enumerate(self.numbers, start=0):
             for i in range(num + 1, len(self.numbers)):
                 if (self.numbers[i] < tile):
                     num_inversions += 1
@@ -127,9 +129,36 @@ class Board:
 
         # detect if the tiles are not a set of sequential numbers
         has_sequential_numbers = True
-        for num, tile in enumerate(numbers, start = 1):
+        for num, tile in enumerate(numbers, start=1):
             if tile != num:
                 has_sequential_numbers = False
 
         return has_sequential_numbers
 
+    @staticmethod
+    def get_boards(dimension):
+        # generate the solution board
+        solution = [place for place in range(1, dimension ** 2)] + [None]
+
+        # get all the variations
+        permutations = Board.get_permutations(solution)
+
+        # remove the solution and filter out unsolvable boards
+        permutations.remove(solution)
+        return [board for board in permutations if Board(board).is_solvable()]
+
+    @staticmethod
+    def get_permutations(tiles):
+        permutations = []
+        if len(tiles) == 2:
+            permutations.append([tiles[0], tiles[1]])
+            permutations.append([tiles[1], tiles[0]])
+        else:
+            for n in range(0, len(tiles)):
+                remainder = tiles[:]
+                building_array = [tiles[n]]
+                remainder.remove(tiles[n])
+                variations = Board.get_permutations(remainder)
+                for variation in variations:
+                    permutations.append(building_array + variation)
+        return permutations
