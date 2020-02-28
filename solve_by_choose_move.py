@@ -1,7 +1,6 @@
 from slider_game import Board
 import random
 
-
 class Solver:
     def __init__(self, tile_config):
         self.board = Board(tile_config)
@@ -13,7 +12,7 @@ class Solver:
     def solve(self):
         if self.board.is_solvable():
             self.visited_states.append(self.get_board_state())
-            while not self.board.solved():
+            while (not self.board.solved()) and (self.status != "stuck"):
                 self.find_best_move()
         else:
             self.status = "Unsolvable"
@@ -42,15 +41,25 @@ class Solver:
 
     def check_locks(self):
         # this is a really really dumb implementation - TEMPORARY
+        # ONLY WORKS for 3x3s, not 4x4s
+
         self.locked_tiles = []
 
-        # lock as much of the 1st row as possible
-        for place in range(0, self.board.dimension):
-            tile = place + 1
-            if (self.board.tiles[place] == tile):
-                self.locked_tiles.append(tile)
-            else:
-                break
+        # if 1 is in the 1 place, lock it
+        if (self.board.tiles[0] == 1):
+            self.locked_tiles.append(1)
+            # and if 2 AND 3 are in place, lock them
+            if (self.board.tiles[1] == 2 and self.board.tiles[2] == 3):
+                self.locked_tiles.append(2)
+                self.locked_tiles.append(3)
+
+        if ((self.board.dimension == 3) and
+                (1 in self.locked_tiles) and
+                (self.board.tiles[3] == 4) and
+                (self.board.tiles[6] == 7)
+        ):
+            self.locked_tiles.append(4)
+            self.locked_tiles.append(7)
 
     def find_best_move(self):
         possible_moves = self.board.lookahead()
@@ -60,14 +69,18 @@ class Solver:
             # only consider moves that don't get us back to a known state
             if (move in self.locked_tiles):
                 move_scores[move] += 9999
+            if len(self.visited_states) > 0 and (possible_moves[move] == self.visited_states[-1]):
+                move_scores[move] += 99999
             if (possible_moves[move] in self.visited_states):
-                move_scores[move] += 999
+                move_scores[move] += 99
 
         best_move = min(move_scores, key=move_scores.get)
         # print("BEST MOVE: {}".format(best_move))
         self.board.move(best_move)
         self.moves.append(best_move)
         self.visited_states.append(self.get_board_state())
-        if (best_move in self.locked_tiles):
-            self.locked_tiles.remove(best_move)
+        # if (best_move in self.locked_tiles):
+        #     self.locked_tiles.remove(best_move)
         self.check_locks()
+        if (len(self.moves) > 500):
+            self.status = "stuck"
