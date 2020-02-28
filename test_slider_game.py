@@ -128,3 +128,19 @@ def test_board_can_tell_if_a_2x2_config_is_solvable():
 def test_board_can_tell_if_a_2x2_config_is_not_solvable():
     puzzle = Board([1, None, 2, 3])
     assert not puzzle.is_solvable()
+
+def test_board_can_report_delta_to_solution():
+    assert Board([1, 2, 3, None]).delta_from_solution() == 0
+    assert Board([1, 2, None, 3]).delta_from_solution() == 1
+
+def test_board_can_provide_lookahead():
+    puzzle = Board([1, None, 3, 2])
+    assert puzzle.lookahead() == {1: [None, 1, 3, 2], 2: [1, 2, 3, None]}
+
+def test_board_can_list_available_moves():
+    puzzle = Board([1, None, 3, 2])
+    assert puzzle.available_moves() == [1,2]
+
+def test_board_can_report_diff_score_to_possible_new_state():
+    puzzle = Board([1, None, 3, 2])
+    assert puzzle.solution_diff_score_from([None, 1, 3, 2]) == 3

@@ -85,8 +85,31 @@ class Board:
     def get_tile_numbers(self):
         # get a list of just the numbers in the tile config, sorted
         numbers = [item for item in self.tiles if isinstance(item, int)]
-        #numbers.sort()
         return numbers
+
+    def delta_from_solution(self):
+        return self.solution_diff_score_from(self.tiles)
+
+    def solution_diff_score_from(self, new_state):
+        delta = 0
+        for num, tile in enumerate(new_state, start=1):
+            if (tile != None):
+                delta += abs(tile - num)
+        return delta
+
+    def available_moves(self):
+        return sorted([tile for tile in self.tile_neighbors(None) if isinstance(tile, int)])
+
+    def lookahead(self):
+        whatif = {}
+        for tile in self.available_moves():
+            board_state = self.tiles[:]
+            tile_position = board_state.index(tile)
+            none_position = board_state.index(None)
+            board_state[tile_position] = None
+            board_state[none_position] = tile
+            whatif[tile] = board_state
+        return whatif
 
     @staticmethod
     def valid(tile_config):
