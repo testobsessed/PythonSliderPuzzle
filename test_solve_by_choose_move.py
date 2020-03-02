@@ -46,7 +46,6 @@ def test_solver_can_solve_all_valid_2x2s():
         player.solve()
         assert player.board.solved()
 
-
 def test_solver_can_solve_a_3x3_requiring_5_moves():
     # Note that this is theoretically no more difficult than the 2x2
     player = Solver([1, 2, 3, 4, 6, 8, 7, None, 5])
@@ -99,7 +98,7 @@ def test_solver_can_solve_random_sampling_of_valid_3x3s():
     random.seed()
     boards = random.sample(Board.get_boards(3), 20)
     for board in boards:
-        player = Solver(board)
+        player = Solver(board[:])
         player.solve()
         if (player.board.solved()):
             print("Solved {} in {} moves.".format(board, len(player.moves)))
@@ -110,6 +109,8 @@ def test_solver_can_solve_random_sampling_of_valid_3x3s():
 # [8, 7, 2, None, 1, 4, 6, 5, 3] took 249 moves
 # [None, 4, 7, 6, 8, 5, 2, 1, 3] took 344 moves
 # [5, None, 7, 3, 2, 1, 8, 4, 6] took 267 moves
+# [2, 7, 1, 5, 6, None, 3, 4, 8] took 241 moves
+# [5, 6, 4, 7, None, 2, 8, 3, 1] took 260 moves
 
 # Not solved in > 500 moves:
 # [1, None, 2, 5, 3, 6, 4, 8, 7]
@@ -123,3 +124,5 @@ def test_solver_can_solve_random_sampling_of_valid_3x3s():
 # [1, 6, 3, 5, None, 2, 4, 8, 7]
 # [4, 2, 1, 3, 6, 5, 8, 7, None]
 # [4, 2, 1, 3, 6, 5, 8, None, 7]
+# [4, 2, 1, 3, 5, 6, 7, 8, None]
+# [7, 8, 1, None, 5, 3, 4, 6, 2]

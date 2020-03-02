@@ -24,21 +24,6 @@ class Solver:
         board_state = self.board.tiles[:]
         return board_state
 
-    def move_randomly(self):
-        available_moves = self.get_available_moves()
-        print("available moves before shuffle: {}".format(available_moves))
-        random.shuffle(available_moves)
-        print("available moves after shuffle: {}".format(available_moves))
-        for tile in available_moves:
-            self.board.move(tile)
-            if (self.board.tiles in self.visited_states):
-                # if we've been here before, undo
-                self.board.move(tile)
-            else:
-                self.moves.append(tile)
-                self.visited_states.append(self.get_board_state())
-                break
-
     def check_locks(self):
         # this is a really really dumb implementation - TEMPORARY
         # ONLY WORKS for 3x3s, not 4x4s
