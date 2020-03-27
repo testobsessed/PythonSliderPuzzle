@@ -33,12 +33,6 @@ def test_solver_can_get_available_moves():
     player = Solver([3, 2, 1, 8, 5, 6, 7, 4, None])
     assert player.get_available_moves() == [4, 6]
 
-def test_solver_can_solve_a_2x2_requiring_5_steps():
-    player = Solver([2, 3, None, 1])
-    player.solve()
-    assert player.moves == [1, 3, 2, 1, 3]
-    assert player.board.solved()
-
 def test_solver_can_solve_all_valid_2x2s():
     boards = Board.get_boards(2)
     for board in boards:
