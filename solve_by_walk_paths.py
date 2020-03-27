@@ -22,19 +22,25 @@ class Solver:
                 # we're done, got it in 1
                 self.paths.append([move])
             else:
-                self.paths.append(self.walk_paths_from_state(resulting_board, [move]))
+                self.paths.append(self.walk_paths_from_state(resulting_board, [move], [self.board.tiles,resulting_board]))
         return self.paths
 
-    def walk_paths_from_state(self, board_state, moves):
+    def walk_paths_from_state(self, board_state, moves, visitedstates):
         newwhatifs = Board(board_state).lookahead()
         for newmove in newwhatifs:
             newboard = newwhatifs[newmove]
             if (newboard == self.board.solution):
+                # we're done
                 moves.append(newmove)
                 return moves
-            elif (newmove != moves[-1]):
+            elif (not newboard in visitedstates):
+                # let's go again
+                visitedstates.append(newboard)
                 moves.append(newmove)
-                return self.walk_paths_from_state(newwhatifs[newmove], moves)
+                return self.walk_paths_from_state(newwhatifs[newmove], moves, visitedstates)
+            else:
+                # this approach won't work
+                pass
 
     def find_shortest_path(self):
         all_paths = self.find_paths()
