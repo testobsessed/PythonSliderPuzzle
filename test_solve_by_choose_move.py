@@ -89,21 +89,22 @@ def test_solver_can_solve_a_4x4():
     solver.solve()
     assert solver.board.solved()
 
-def test_solver_can_solve_random_sampling_of_valid_3x3s():
-    # it is generally suboptimal to have random tests
-    # however the set of all valid 3x3s is too big (181439)
-    # note also that this test can never fail (no asserts) and
-    # is for information only.
-    print("\n\nThe following trials provide insight into the efficiency of the current algorithm...")
-    random.seed()
-    boards = random.sample(Board.get_boards(3), 20)
-    for board in boards:
-        player = Solver(board[:])
-        player.solve()
-        if (player.board.solved()):
-            print("Solved {} in {} moves.".format(board, len(player.moves)))
-        else:
-            print("Unable to solve {} after {} moves".format(board, len(player.moves)))
+
+# def test_solver_can_solve_random_sampling_of_valid_3x3s():
+#     # it is generally suboptimal to have random tests
+#     # however the set of all valid 3x3s is too big (181439)
+#     # note also that this test can never fail (no asserts) and
+#     # is for information only.
+#     print("\n\nThe following trials provide insight into the efficiency of the current algorithm...")
+#     random.seed()
+#     boards = random.sample(Board.get_boards(3), 20)
+#     for board in boards:
+#         player = Solver(board[:])
+#         player.solve()
+#         if (player.board.solved()):
+#             print("Solved {} in {} moves.".format(board, len(player.moves)))
+#         else:
+#             print("Unable to solve {} after {} moves".format(board, len(player.moves)))
 
 # known problematic boards:
 # [8, 7, 2, None, 1, 4, 6, 5, 3] took 249 moves
@@ -126,3 +127,8 @@ def test_solver_can_solve_random_sampling_of_valid_3x3s():
 # [4, 2, 1, 3, 6, 5, 8, None, 7]
 # [4, 2, 1, 3, 5, 6, 7, 8, None]
 # [7, 8, 1, None, 5, 3, 4, 6, 2]
+
+# visited before
+# count of visited before
+# reinforcement - do many things - reward based on making the right decisions
+# deep neural nets - make many moves -
