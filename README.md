@@ -143,7 +143,8 @@ changes state. So it's like moving into a new "room" in the maze.
 
 If we say that only solvable configurations of tiles on the board
 are "valid," then
-ou can---with enough moves---eventually get from any valid configuration
+you can --- with enough moves --- eventually get from any 
+valid configuration
 to any other valid configuration.
 
 (Consider it this way: if a valid board is one you can solve, then
@@ -179,7 +180,7 @@ move to make. It's one step closer to having something that could
 move toward reinforcement learning. But before I could even
 think about tackling such a thing, I had an AHA moment.
 
-Approach #3---my AHA moment---works backward from a solved
+Approach #3 --- my AHA moment --- works backward from a solved
 puzzle. Applying the realization that a slider puzzle is like
 a maze, I wondered how hard it would be to generate all the
 unsolved puzzles that were X moves away from the solution.
