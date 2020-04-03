@@ -1,63 +1,64 @@
 from slider_game import Board
 import random
 
+# An attempt at a brute force solution by recursively walking
+# all paths.
+#
+# It doesn't work because there are too many possibilities.
 
 class Solver:
     def __init__(self, tile_config):
+        self.start_state = tile_config[:]
         self.board = Board(tile_config)
         self.solutions = {}
         self.recursed = 0
-        self.paths = []
+        self.all_paths = []
+        self.solution_path = []
 
     def solve(self):
         moves = self.find_shortest_path()
-        for move in moves:
-            self.board.move(move)
+        self.solution_path = moves
+        if (moves != None):
+            for move in moves:
+                self.board.move(move)
+        else:
+            print("CRUD. Could not find a solution for {}.".format(self.start_state))
+        return self.board.solved()
 
-    def find_paths(self):
-        whatifs = self.board.lookahead()
-        for move in whatifs:
-            resulting_board = whatifs[move]
-            if (resulting_board == self.board.solution):
-                # we're done, got it in 1
-                self.paths.append([move])
-            else:
-                possible_path = self.walk_paths_from_state(resulting_board, [move], [self.board.tiles,resulting_board])
-                if (possible_path != None):
-                    self.paths.append(possible_path)
-        return self.paths
-
-    def walk_paths_from_state(self, board_state, moves, visitedstates):
-        print("\nWALKING PATHS\nVISITED STATES:\n{}\nMOVES: {}\n".format(visitedstates, moves))
-        newwhatifs = Board(board_state).lookahead()
-        for newmove in newwhatifs:
-            print("considering move: {}".format(newmove))
-            newboard = newwhatifs[newmove]
-            if (newboard == self.board.solution):
+    def find_all_paths_from_point(self, board_state, completed_moves, previous_states, paths_so_far):
+        all_paths = paths_so_far[:]
+        available_moves = Board(board_state).lookahead()
+        for move in available_moves:
+            new_board_state = available_moves[move]
+            path = completed_moves[:]
+            if (new_board_state == self.board.solution):
                 # we're done
-                moves.append(newmove)
-                print("Done - found the exit")
-                return moves
-            elif (newmove == moves[-1]):
-                # ignore this move - it just takes us back
-                print("Ignoring reversal")
+                path.append(move)
+                all_paths.append(path)
+            elif (len(completed_moves) > 0) and (move == completed_moves[-1]):
+                # ignore attempts to undo
                 pass
-            elif (not newboard in visitedstates):
-                # let's go again
-                print("Not done, and not going somewhere we've been before")
-                moves.append(newmove)
-                visitedstates.append(newboard)
-                return self.walk_paths_from_state(newwhatifs[newmove], moves, visitedstates)
+            elif (len(path) > 2):
+                path.append(move)
+                path.append("R")
+                all_paths.append(path)
+            elif (new_board_state in previous_states):
+                path.append(move)
+                path.append("X")
+                all_paths.append(path)
             else:
-                # this approach won't work
-                print("Not a viable path")
-                return None
+                path.append(move)
+                previous_states.append(board_state)
+                all_paths.extend(self.find_all_paths_from_point(new_board_state, path, previous_states, all_paths))
+        return all_paths
 
     def find_shortest_path(self):
-        all_paths = self.find_paths()
-        print("FINDING SHORTEST\npaths:\n{}".format(all_paths))
+        self.all_paths = self.find_all_paths_from_point(self.start_state, [], [], [])
         shortest_path = None
-        for path in all_paths:
-            if (shortest_path == None) or (len(shortest_path) > len(path)):
+        for path in self.all_paths:
+            if (not isinstance(path[-1], int)):
+                # skip the ones marked as not viable
+                pass
+            elif (shortest_path == None) or (len(shortest_path) > len(path)):
                 shortest_path = path
         return shortest_path
