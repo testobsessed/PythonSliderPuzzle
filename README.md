@@ -18,8 +18,12 @@ Three days later I
 staggered away from the keyboard with
 [a solution in Ruby](https://github.com/testobsessed/Ruby-Slider-Puzzle-Sample)
 that worked for a bunch of configurations.
-I gave up working on the puzzle after a while, without figuring
-out how good (or not) my algorithm was.
+I had written code to run it through sets of unsolved
+boards, and knew that there were boards it could not
+solve, but 
+I gave up working on it before I was able to determine
+to my satisfaction how good (or not) the algorithm
+was at solving arbitrary 3x3s.
 
 Fast forward a decade. 
 I'm currently on a haitus, taking time to sharpen my saw, get
@@ -44,6 +48,8 @@ Naively.
 Better yet, when I searched for the original slider puzzle
 challenge I found an 
 [updated one on Reddit.](https://www.reddit.com/r/dailyprogrammer/comments/62ktmx/20170331_challenge_308_hard_slider_game_puzzle/)
+This variation of the puzzle challenges you to solve an
+arbitrary NxN.
 
 So this repo contains the somewhat cluttered detritus 
 of my attempt at the slider puzzle problem in
@@ -57,7 +63,12 @@ individual tests. Thus the build isn't green.
 Also, the code is inefficient in its implementation and 
 inconsistent in its expression.
 
-But I'm setting it down for 
+And finally because there are so many permutations of 
+3x3 boards I didn't even try 4x4. This code more or less
+does 2x2s and 3x3s and may or may not do 4x4s I have no
+idea.
+
+However I'm setting it down for 
 now without cleaning it up because I need to move on to
 other things if only for my own sanity.
 
@@ -73,7 +84,8 @@ I am not going to cover things here that are
 better covered elsewhere. This is more like a cheatsheet
 of things you need to know if you're going to tackle this space.
 
-###Not all configurations are solvable. 
+### Not all configurations are solvable.
+
 This is one of the
 big mistakes I made when I tackled this the first time in
 Ruby.
@@ -122,7 +134,7 @@ Although once you know what to look for, it's easy to see when a
 Thus
 the resources linked above are super helpful.
 
-###You can think of it like a maze.
+### You can think of it like a maze.
 
 Instead of thinking about shuffling tiles around, think 
 about moving the empty space. The catch is that if you think
