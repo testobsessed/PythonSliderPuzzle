@@ -87,25 +87,39 @@ with a deeper explanation.
 
 Imagine a 2x2 slider puzzle. Here's one solved:
 
-| 1 | 2 |
-| 3 |   |
-
+|     |     |
+|:---:|:---:|
+| 1   | 2   |
+| 3   |     |
+ 
 If you slide the 3 to the right it becomes:
 
-| 1 | 2 |
-|   | 3 |
+|     |     |
+|:---:|:---:|
+| 1   | 2   |
+|     | 3   |
+
 
 There are 4 x 3 x 2 x 1 = 24 possible permutations of the board.
 However only 10 of those are solvable. As an example of
 an unsolvable configuration, consider:
 
-| 1 | 3 |
-| 2 |   |
+|     |     |
+|:---:|:---:|
+| 1   | 3   |
+| 2   |     |
 
 No matter how much you slide the tiles around, you can't get the 
-2 and 3 to switch their order.
+2 and 3 to switch their order. (*Hmmm...move the 2, then the 1,
+then the 3...no...* Seriously, the thing that's kinda special about 
+a 2x2 slider puzzle is that at any given moment in time if you just
+did a move, there is only 1 move available to you that doesn't undo
+what you just did. So basically all you can do is push the puzzle
+pieces around in a circle.)
 
-It's easy to see in a 2x2 and much harder to see in a 3x3, thus
+Although once you know what to look for, it's easy to see when a 
+2x2 configuration isn't solvable, and much harder to see in a 3x3.
+Thus
 the resources linked above are super helpful.
 
 ###You can think of it like a maze.
@@ -170,15 +184,20 @@ unsolved states by moving away from the solved state.
 It turns out, if you have a 3x3 puzzle in the solved state, there
 are only 2 places you can go.
 
-| 1 | 2 | 3 |
-| 4 | 5 | 6 | 
-| 7 |   | 8 |
+
+|     |     |     |
+|:---:|:---:|:---:|
+| 1   | 2   | 3   |
+| 4   | 5   |     |
+| 7   | 8   | 6   |
 
 or
 
-| 1 | 2 | 3 |
-| 4 | 5 |   | 
-| 7 | 8 | 6 |
+|     |     |     |
+|:---:|:---:|:---:|
+| 1   | 2   | 3   |
+| 4   | 5   | 6   |
+| 7   |     | 8   |
 
 If you then take the next step, you can see that there are 2 new
 states you can get to from each of those states. And so on.
@@ -209,9 +228,16 @@ Here's where I learned exactly how O^N inefficient my code is...
 But I did at least partly answer my question.
      
 There are 181,439 valid / solvable 3x3 board configuration.
+
 Only 37,808 (just over 20%) of those can be solved in 20 
-moves or fewer. As I type this I'm running the stats for 25
-moves.
+moves or fewer.
+
+It turns out 140,134 (77%) can be solved in 25 moves or fewer.
+
+Perhaps in the future I'll get around to doing a little 
+table to show the
+progression of counts of puzzles that can be solved in a
+given number of moves. But not today.
 
 ## What I Learned
 
