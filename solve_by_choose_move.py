@@ -1,6 +1,8 @@
 from slider_game import Board
 import random
 
+# An attempt at iteratively choosing the "best" move
+
 class Solver:
     def __init__(self, tile_config):
         self.board = Board(tile_config)
