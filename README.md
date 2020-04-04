@@ -240,17 +240,54 @@ Here's where I learned exactly how O^N inefficient my code is...
 
 But I did at least partly answer my question.
      
-There are 181,439 valid / solvable 3x3 board configuration.
-
-Only 37,808 (just over 20%) of those can be solved in 20 
-moves or fewer.
-
-It turns out 140,134 (77%) can be solved in 25 moves or fewer.
-
-Perhaps in the future I'll get around to doing a little 
+Here's a little 
 table to show the
 progression of counts of puzzles that can be solved in a
-given number of moves. But not today.
+given number of moves. 
+
+| Number of Moves | Count of Boards Solved |
+| ---: | ---: |
+| 1 | 2 |
+| 2 | 4 |
+| 3 | 8 |
+| 4 | 16 |
+| 5 | 20 |
+| 6 | 39 |
+| 7 | 62 |
+| 8 | 116 |
+| 9 | 152 |
+| 10 | 286 |
+| 11 | 396 |
+| 12 | 748 |
+| 13 | 1,024 |
+| 14 | 1,893 |
+| 15 | 2,512 |
+| 16 | 4,485 |
+| 17 | 5,638 |
+| 18 | 9,529 |
+| 19 | 10,878 |
+| 20 | 16,993 |
+| 21 | 17,110 |
+| 22 | 23,952 |
+| 23 | 20,224 |
+| 24 | 24,047 |
+|TOTAL | 140,134 |
+
+So 140,134 of the 181,439 solvable configurations (77%) 
+can be solved in 24 moves or fewer.
+
+I'm just running this on my local desktop. So
+I had to run the code overnight to get the results in this
+table. If I wanted to finish the table and discover the max
+number of moves needed to solve a 3x3 puzzle, I'd need
+to improve my code substantially -- or make it run in
+parallel in the cloud. For now, that's more effort
+than I am prepared to put into answering those questions.
+So I'll leave that work for someone who is more passionate
+about slider puzzles than I am.
+
+I may try to do something similar with 4x4 puzzles, but 
+not today.
 
 ## What I Learned
 

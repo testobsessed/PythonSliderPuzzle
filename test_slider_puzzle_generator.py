@@ -70,17 +70,17 @@ def test_all_2x2s():
         print("Puzzle {} solution {}".format(board, solved))
 
 def test_all_3x3s():
-    print("\n")
     all_valid_boards = Board.get_boards(3)
     generated_solutions = [
         [[ 1, 2, 3, 4, 5, 6, 7, 8, None], []]
     ]
+    solved_in = {}
     solved_in_10 = []
     not_solved_in_10 = []
     for move_count in range(1, 25):
+        solved_in[move_count] = 0
         generated_solutions.extend(Generator(3).inmoves(move_count))
-    # for thing in solutions:
-    #     print(solutions[thing])
+
     for board in all_valid_boards:
         solved = None
         for solution in generated_solutions:
@@ -95,9 +95,57 @@ def test_all_3x3s():
             not_solved_in_10.append(board)
 
         # print("Puzzle {} solution {}".format(board, solved))
-    print("Count of valid 3x3s = {}".format(len(all_valid_boards)))
-    print("Solved in 100 moves or less = {}".format(len(solved_in_10)))
-    print("Remaining boards = {}".format(len(not_solved_in_10)))
+
+    for board in solved_in_10:
+        # print("Board {} solved in {} moves.".format(board[0], len(board[1])))
+        solution_length = len(board[1])
+        solved_in[solution_length] += 1
+    # print("Count of valid 3x3s = {}".format(len(all_valid_boards)))
+    # print("Solved in 100 moves or less = {}".format(len(solved_in_10)))
+    # print("Remaining boards = {}".format(len(not_solved_in_10)))
+
+    # Count of valid 3x3s = 181439
+    # Solved in 20 moves or less = 37808
+    # Remaining boards = 143631
+    print("\n| Number of Moves | Count of Boards Solved |")
+    print("| ---: | ---: |")
+    for item in solved_in:
+        print("| {} | {} |".format(item, solved_in[item]))
+    print("\n{}".format(solved_in))
+
+# def test_get_stats_for_3x3s():
+#     print("\n")
+#     all_valid_boards = Board.get_boards(3)
+#     states_in_moves = {
+#         0: [[ 1, 2, 3, 4, 5, 6, 7, 8, None], []]
+#     }
+#     solved_in_moves = {}
+#
+#     for count in range(1, 5):
+#         states_in_moves[count] = Generator(3).inmoves(count)
+#
+#     for board in all_valid_boards:
+#         solved = None
+#         for count in states_in_moves:
+#             for state in states_in_moves[count]:
+#                 if state[0] == board:
+#                     solved_in_moves[]
+#                     if (solved == None or len(solved) > len(solution[1])):
+#
+#             if (solution[0] == board):
+#
+#                     solved = solution[1]
+#                     solved.reverse()
+#                     break
+#         if (solved != None):
+#             solved_in_10.append([board, solved])
+#         else:
+#             not_solved_in_10.append(board)
+#
+#         # print("Puzzle {} solution {}".format(board, solved))
+#     print("Count of valid 3x3s = {}".format(len(all_valid_boards)))
+#     print("Solved in 100 moves or less = {}".format(len(solved_in_10)))
+#     print("Remaining boards = {}".format(len(not_solved_in_10)))
 
     # Count of valid 3x3s = 181439
     # Solved in 20 moves or less = 37808
